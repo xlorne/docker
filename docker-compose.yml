@@ -1,0 +1,23 @@
+version: '3.9'
+
+secrets:
+  db_password:
+    file: db_password.txt
+  lorne:
+    external: true
+
+services:
+   nginx:
+    image: nginx:latest
+    ports:
+     - "8888:80"
+    environment:
+     - USER_FILE=/run/secrets/lorne
+    secrets:
+      - source: db_password
+        target: redis_secret
+        uid: '103'
+        gid: '103'
+        mode: 0440
+      - lorne
+
